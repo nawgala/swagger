@@ -1,0 +1,73 @@
+
+<assembly>
+    <id>bin</id>
+
+    <!-- Output formats. -->
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <!-- Include or not the base directory in the output (here it is server). -->
+    <includeBaseDirectory>true</includeBaseDirectory>
+
+    <!-- Files to include in the output. -->
+    <fileSets>
+        <!-- All the libraries will be included in the lib folder. -->
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>logs</outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>target/jsw/server/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>wrapper.conf</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>target/jsw/server/lib</directory>
+            <outputDirectory>lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>bin</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <!-- All the executable files for different operating systems will be
+        included in the bin folder. -->
+        <fileSet>
+            <directory>target/jsw/server/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>755</directoryMode>
+        </fileSet>
+        <!-- ALl configuration files will be in the conf folder. -->
+        <fileSet>
+            <directory>target/jsw/server/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+    </fileSets>
+
+    <!-- Copy jar files of dependencies to lib folder.  -->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <useProjectArtifact>true</useProjectArtifact>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+</assembly>

@@ -1,0 +1,40 @@
+# Graphql API server port
+server:
+  port: 7000
+
+# Xcap server related information
+xcap-server:
+  name: Proxy-Server
+
+
+
+# Data source properties
+spring:
+      # JDBC url of the database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/keycloak?autoreconnect=true
+    # Login username of the database
+    username: user
+    # Login password of the database
+    password: password
+    #C3P0 configurations
+    type : com.mchange.v2.c3p0.ComboPooledDataSource
+    initialization-mode: always
+
+  # TRANSACTION (TransactionProperties)
+  transaction:
+    # Default transaction timeout. If a duration suffix is not specified, seconds will be used.
+    default-timeout: 5s
+    # Whether to roll back on commit failures.
+    rollback-on-commit-failure:
+
+  # JDBC (JdbcProperties)
+  jdbc:
+    template:
+      # Number of rows that should be fetched from the database when more rows are needed.
+      fetch-size: -1
+      # Maximum number of rows.
+      max-rows: -1
+      # Query timeout. Default is to use the JDBC driver's default configuration. If a duration suffix is not specified, seconds will be used.
+      query-timeout: 2s

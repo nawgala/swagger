@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.prs.swagger</groupId>
+        <artifactId>swagger</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>swagger-server</artifactId>
+    <name>swagger-server</name>
+    <description>swagger Server</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.prs.swagger</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-jpa</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <!--<testSourceDirectory>src/test/kotlin</testSourceDirectory>-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.xml</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.txt</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+                    <target>${project.build.directory}</target>
+                    <daemons>
+                        <daemon>
+                            <id>swagger-server</id>
+                            <!-- Main class of the program. -->
+                            <mainClass>com.prs.xcap.simulator.tas.tasserver.TasServerApplicationKt</mainClass>
+
+                            <!-- Commandline arguments to perform tasks. -->
+                            <commandLineArguments>
+                                <commandLineArgument>start</commandLineArgument>
+                            </commandLineArguments>
+
+                            <!-- Define the platform to support.
+                            jsw: Java Service Wrapper. -->
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+
+                            <!-- Define the platforms needed to be support. -->
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+
+                                    <!-- Platforms. -->
+                                    <includes>
+                                        <include>linux-x86-32</include>
+                                        <include>windows-x86-32</include>
+                                        <include>linux-x86-64</include>
+                                        <include>windows-x86-64</include>
+                                    </includes>
+
+                                    <!-- wrapper.conf configurations. -->
+                                    <configuration>
+                                        <!-- Define java main class. -->
+                                        <property>
+                                            <name>wrapper.java.mainclass</name>
+                                            <value>org.tanukisoftware.wrapper.WrapperSimpleApp</value>
+                                        </property>
+
+                                        <!-- Define the directory contains the configurations. -->
+                                        <property>
+                                            <name>configuration.directory.in.classpath.first</name>
+                                            <value>conf</value>
+                                        </property>
+
+                                        <!-- Define the directory contains library files. -->
+                                        <property>
+                                            <name>set.default.REPO_DIR</name>
+                                            <value>lib</value>
+                                        </property>
+
+                                        <!-- Define the file to save logs related to wrapper. -->
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>logs/wrapper.log</value>
+                                        </property>
+
+                                        <!-- Initial memory size for JVM in Megabytes. -->
+                                        <property>
+                                            <name>wrapper.java.initmemory</name>
+                                            <value>256</value>
+                                        </property>
+
+                                        <!-- Maximum memory size for JVM in Megabytes. -->
+                                        <property>
+                                            <name>wrapper.java.maxmemory</name>
+                                            <value>1024</value>
+                                        </property>
+
+                                        <!--
+                                            Configure the format of a console log message.
+                                            'Z':millisecond time
+                                            'L':log level
+                                            'P':prefix
+                                            'M':for message
+                                        -->
+                                        <property>
+                                            <name>wrapper.console.format</name>
+                                            <value>ZLPM</value>
+                                        </property>
+                                    </configuration>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                        </daemon>
+                    </daemons>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-jsw-scripts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                            <goal>create-repository</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/src.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

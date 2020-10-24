@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simservs xmlns="http://uri.etsi.org/ngn/params/xml/simservs/xcap"
+          xmlns:cp="urn:ietf:params:xml:ns:common-policy">
+
+    <originating-identity-presentation active="true"/>
+    <originating-identity-presentation-restriction active="true">
+        <default-behaviour>presentation-not-restricted</default-behaviour>
+    </originating-identity-presentation-restriction>
+    <terminating-identity-presentation active="false"/>
+    <terminating-identity-presentation-restriction active="false">
+        <default-behaviour>presentation-restricted</default-behaviour>
+    </terminating-identity-presentation-restriction>
+    <communication-diversion active="true">
+        <NoReplyTimer>20</NoReplyTimer>
+        <cp:ruleset>
+            <cp:rule id="cfu">
+                <cp:conditions>
+                    <rule-deactivated/>
+                </cp:conditions>
+                <cp:actions>
+                    <forward-to>
+                        <target>tel:49173503940295</target>
+                    </forward-to>
+                </cp:actions>
+            </cp:rule>
+            <cp:rule id="cfb">
+                <cp:conditions>
+                    <rule-deactivated/>
+                    <busy/>
+                </cp:conditions>
+                <cp:actions>
+                    <forward-to>
+                        <target>tel:49173503940295</target>
+                        <notify-caller>false</notify-caller>
+                        <notify-served-user>false</notify-served-user>
+                    </forward-to>
+                </cp:actions>
+            </cp:rule>
+            <cp:rule id="cfnry">
+                <cp:conditions>
+                    <no-answer/>
+                </cp:conditions>
+                <cp:actions>
+                    <forward-to>
+                        <target>tel:491733941284</target>
+                        <notify-caller>false</notify-caller>
+                        <notify-served-user>false</notify-served-user>
+                    </forward-to>
+                </cp:actions>
+            </cp:rule>
+            <cp:rule id="cfnrc">
+                <cp:conditions>
+                    <rule-deactivated/>
+                    <not-reachable/>
+                </cp:conditions>
+                <cp:actions>
+                    <forward-to>
+                        <target>tel:49173503940295</target>
+                        <notify-caller>false</notify-caller>
+                    </forward-to>
+                </cp:actions>
+            </cp:rule>
+        </cp:ruleset>
+    </communication-diversion>
+    <communication-waiting active="true"/>
+    <incoming-communication-barring active="true">
+        <cp:ruleset>
+            <cp:rule id="BICROAM">
+                <cp:conditions>
+                    <rule-deactivated/>
+                    <roaming/>
+                </cp:conditions>
+                <cp:actions>
+                    <allow>false</allow>
+                </cp:actions>
+            </cp:rule>
+        </cp:ruleset>
+    </incoming-communication-barring>
+    <outgoing-communication-barring active="true">
+        <cp:ruleset>
+            <cp:rule id="BOIC">
+                <cp:conditions>
+                    <rule-deactivated/>
+                    <international/>
+                </cp:conditions>
+                <cp:actions>
+                    <allow>false</allow>
+                </cp:actions>
+            </cp:rule>
+        </cp:ruleset>
+    </outgoing-communication-barring>
+    <communication-completion active="true"/>
+</simservs>
