@@ -1,5 +1,8 @@
 # READE
 
+This is a basic project structure of multi module kotlin project with Maven. 
+Dependencies has managed with bom in the parent pom
+
 
 ## Environment
  
@@ -20,9 +23,12 @@ use following command to tag the project on gitBD
     mvn release:prepare -Dmaven.test.skip=true -Darguments="-Dmaven.test.skip=true" -Dresume=false
     
     
-## TAS Server
-   TAS is stayed behind the proxy. All the authenticated request will be routed to TAS. Swagger is enabled for the tas 
-   interface. you can check the response returned from tas as bellow specified
+## Server
+   How to start spring boot application with custom package scanning    
+    
+## Swagger Server
+   
+   Sample spring boot application with swagger interface
 
    Ref: https://springfox.github.io/springfox/docs/snapshot/
 
